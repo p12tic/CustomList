@@ -106,7 +106,9 @@ class CustomList {
         global $CustomListLabelPrefix;
         global $CustomListLabelSuffix;
         $new_line = '<div class="t-li' . ($indent + 1) . '"><span class="t-li">';
-        $new_line .= $CustomListLabelPrefix . $label . $CustomListLabelSuffix;
+        if (!empty($label)) {
+            $new_line .= $CustomListLabelPrefix . $label . $CustomListLabelSuffix;
+        }
         $new_line .= '</span> ' . $line;
         $line = $new_line;
     }
