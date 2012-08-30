@@ -29,7 +29,7 @@ $wgExtensionCredits['parserhook'][] = array(
 $CustomListLabelPrefix = '';
 $CustomListLabelSuffix = ')';
 
-$wgHooks['ParserBeforeStrip'][] = 'CustomList::parse';
+$wgHooks['ParserBeforeInternalParse'][] = 'CustomList::parse';
 
 class CustomList {
 
