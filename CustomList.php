@@ -59,8 +59,8 @@ class CustomList {
                     }
                 }
 
-                if (preg_match('/^(:*)@([0-9,\-]*?)@/', $lines[$i], $matches) > 0) {
-                    $lines[$i] = preg_replace('/^:*@[0-9,\-]*?@\s*/', '', $lines[$i]);
+                if (preg_match('/^(:*)@(.{0,20})@/', $lines[$i], $matches) > 0) {
+                    $lines[$i] = preg_replace('/^:*@(.{0,20})@\s*/', '', $lines[$i]);
                     // new list entry
                     if ($in_list) {
                         self::terminate($lines[$i-1]);
