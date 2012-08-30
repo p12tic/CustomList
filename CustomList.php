@@ -25,6 +25,7 @@ $wgExtensionCredits['parserhook'][] = array(
 //  'url'            => '',
 );
 
+
 $CustomListLabelPrefix = '';
 $CustomListLabelSuffix = ')';
 
@@ -34,19 +35,16 @@ class CustomList {
 
     static function parse(Parser &$parser, &$text, &$strip_state)
     {
-        global $CustomListLabelPrefix;
-        global $CustomListLabelSuffix;
-        $terminator
 
-        $lines = explode('\n', $text);
-
+        $lines = explode("\n", $text);
         if (count($lines) < 1) {
-            return;
+            return true;
         }
 
         $in_list = false;
 
         for ($i = 0; $i < count($lines); $i++) {
+
             if ($in_list) {
                 if (preg_match('/^\s*=+.*?=+\s*$/', $lines[$i]) > 0) {
                     //terminate on heading
@@ -59,24 +57,29 @@ class CustomList {
                 }
             }
 
-            $matches = [];
+            $matches = array();
+
             if (preg_match('/^(:*)@([0-9,\-]*?)@/', $lines[$i], $matches) > 0) {
+                $lines[$i] = preg_replace('/^:*@[0-9,\-]*?@\s*/', '', $lines[$i]);
                 // new list entry
                 if ($in_list) {
                     self::terminate($lines[$i-1]);
                 }
-                $indent = strlen($matches[0]);
-                $label = $matches[1];
+                $indent = strlen($matches[1]);
+                $label = $matches[2];
 
                 self::begin($lines[$i], $indent, $label);
                 $in_list = true;
             }
+
         }
+
         if ($in_list) {
             self::terminate($lines[count($lines)-1]);
         }
-        $text = implode('', $lines);
-        return;
+        $text = implode("\n", $lines);
+        return true;
+
     }
 
     static function terminate(&$line)
@@ -86,10 +89,12 @@ class CustomList {
 
     static function begin(&$line, $indent, $label)
     {
-        $line = '<div class="t-li' . ($indent + 1) . '"><span class="t-li">' . $label . '</span>' . $line;
+        global $CustomListLabelPrefix;
+        global $CustomListLabelSuffix;
+        $new_line = '<div class="t-li' . ($indent + 1) . '"><span class="t-li">';
+        $new_line .= $CustomListLabelPrefix . $label . $CustomListLabelSuffix;
+        $new_line .= '</span> ' . $line;
+        $line = $new_line;
     }
 
 }
-
-
-
