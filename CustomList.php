@@ -42,36 +42,50 @@ class CustomList {
         }
 
         $in_list = false;
+        $in_nowiki = false;
 
         for ($i = 0; $i < count($lines); $i++) {
+            if (!$in_nowiki) {
 
-            if ($in_list) {
-                if (preg_match('/^\s*=+.*?=+\s*$/', $lines[$i]) > 0) {
-                    //terminate on heading
-                    self::terminate($lines[$i-1]);
-                    $in_list = false;
-                } else if (preg_match('/^\s*$/', $lines[$i]) > 0) {
-                    //terminate on empty line
-                    self::terminate($lines[$i-1]);
-                    $in_list = false;
-                }
-            }
-
-            $matches = array();
-
-            if (preg_match('/^(:*)@([0-9,\-]*?)@/', $lines[$i], $matches) > 0) {
-                $lines[$i] = preg_replace('/^:*@[0-9,\-]*?@\s*/', '', $lines[$i]);
-                // new list entry
                 if ($in_list) {
-                    self::terminate($lines[$i-1]);
+                    if (preg_match('/^\s*=+.*?=+\s*$/', $lines[$i]) > 0) {
+                        //terminate on heading
+                        self::terminate($lines[$i-1]);
+                        $in_list = false;
+                    } else if (preg_match('/^\s*$/', $lines[$i]) > 0) {
+                        //terminate on empty line
+                        self::terminate($lines[$i-1]);
+                        $in_list = false;
+                    }
                 }
-                $indent = strlen($matches[1]);
-                $label = $matches[2];
 
-                self::begin($lines[$i], $indent, $label);
-                $in_list = true;
+                if (preg_match('/^(:*)@([0-9,\-]*?)@/', $lines[$i], $matches) > 0) {
+                    $lines[$i] = preg_replace('/^:*@[0-9,\-]*?@\s*/', '', $lines[$i]);
+                    // new list entry
+                    if ($in_list) {
+                        self::terminate($lines[$i-1]);
+                    }
+                    $indent = strlen($matches[1]);
+                    $label = $matches[2];
+
+                    self::begin($lines[$i], $indent, $label);
+                    $in_list = true;
+                }
             }
 
+            //update in_nowiki
+            $nw_begin = stripos($lines[$i], '<nowiki>');
+            $nw_end = stripos($lines[$i], '</nowiki>');
+            if (($nw_begin === false) && ($nw_end === false)) {
+            } else if ($nw_begin === false) {
+                $in_nowiki = false;
+            } else if ($nw_end === false) {
+                $in_nowiki = true;
+            } else if ($nw_end > $nw_begin) {
+                $in_nowiki = false;
+            } else {
+                $in_nowiki = true;
+            }
         }
 
         if ($in_list) {
