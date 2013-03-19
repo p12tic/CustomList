@@ -1,0 +1,8 @@
+  Information
+  ===========
+
+This is a MediaWiki extension that implements an alternative list syntax that 
+allows to define custom labels for the list items. This way complex lists can be
+as readable as the native, simple lists.
+
+Used at cppreference.com
