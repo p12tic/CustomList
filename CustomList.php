@@ -21,10 +21,11 @@ $wgExtensionCredits['parserhook'][] = array(
     'path'           => __FILE__,
     'name'           => 'CustomList',
     'author'         => 'p12',
-    'descriptionmsg' => 'Emulates ordered lists with custom labels ',
 //  'url'            => '',
+    'descriptionmsg' => 'customlist_desc',
 );
 
+$wgExtensionMessagesFiles['CustomList'] = dirname( __FILE__ ) . '/' . 'CustomList.i18n.php';
 
 $CustomListLabelPrefix = '';
 $CustomListLabelSuffix = ')';
