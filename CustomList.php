@@ -23,6 +23,7 @@ $wgExtensionCredits['parserhook'][] = array(
     'author'         => 'p12',
     'descriptionmsg' => 'customlist_desc',
     'url'            => 'https://github.com/p12tic/CustomList',
+    'version'        => '1.0',
 );
 
 $wgExtensionMessagesFiles['CustomList'] = dirname( __FILE__ ) . '/' . 'CustomList.i18n.php';
