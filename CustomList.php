@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright 2012 p12 <tir5c3@yahoo.co.uk>
+    Copyright 2012 Povilas Kanapickas <tir5c3@yahoo.co.uk>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 $wgExtensionCredits['parserhook'][] = array(
     'path'           => __FILE__,
     'name'           => 'CustomList',
-    'author'         => 'p12',
+    'author'         => 'Povilas Kanapickas',
     'descriptionmsg' => 'customlist_desc',
     'url'            => 'https://github.com/p12tic/CustomList',
     'version'        => '1.0',
